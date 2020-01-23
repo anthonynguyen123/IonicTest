@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<!--<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Ionic App</title>
+
+  <base href="/" />
+
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+
+  <!-- add to homescreen for ios 
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src *; style-src *  'unsafe-inline'; script-src *  'unsafe-inline'; media-src *">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- <title>Page Title</title> -->
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+<script src="js/jquery.js"></script>
+<script src="js/jquery.mobile-1.4.5.js"></script>
+
+<!-- Refreshes the page every interval of time (Change interval by changing number in between the " " -->
+<META HTTP-EQUIV="refresh" CONTENT="60">
+
+
+
+
+</head>
+
+
+
+<body>
+
+
+
+<!-- Start of first page -->
+<div data-role="page" id="ListOfNames">
+
+	<div data-role="header">
+		<h1>List of Names</h1>
+	</div><!-- /header -->
+	
+	<div role="main" class="ui-content">
+		<div class ="container">
+			<div class = "tab tab-1">
+				<table id = "table" align = "center" width = "330px">
+					<tr>
+						<th>Name</th>
+						<th width = "20%">Status</th>
+						<th>Comment</th>
+					</tr>
+				</table>
+			</div>
+			<p align = "center">
+				Please select your name from the table above.
+			</p>
+			<p align = "center">
+				Then, select In or Out and add a comment!
+			</p>
+			<p align = "center">
+				Click Update!
+			</P>
+			
+			<form class="gform" method = "POST" data-email = "example@email.net" action = "https://script.google.com/macros/s/AKfycbyUhj-N5viX1MWzzIv1wm2kMtmGh2IYJPBcP4MffhkKJZHNo8c/exec">
+				<div class = "form-elements">
+					
+					<!--Name:<input type="text" name = "name" id = "name">-->
+					<fieldset class = "pure-group">
+						<label for = "Name">Name: </label>
+						<input name = "Name" id = "name" placeholder = "Insert Name Here" value = "">
+					</fieldset>
+					<fieldset class = "pure-group">
+						
+						
+						In: <input type ="radio" name = "InOut" id = "in" value = "In" onclick = "clearComment()">
+						<br>
+						Out: <input type ="radio" name = "InOut" id = "out" value = "Out">
+						<br>
+					</fieldset>
+					<fieldset class = "pure-group">
+						<label for = "Name">Comment: </label>
+						<input type="text" name = "Comment" id = "status" maxlength = "26" placeholder = "Insert any comments/remarks when out">
+					</fieldset>
+					<fieldset type="hidden" class = "pure-group">
+						
+						<input type="hidden" name = "Idx" id = "idx" value = "">
+					</fieldset>
+					<fieldset type="hidden" class = "pure-group">
+						
+						<input type="hidden" name = "Remove" id = "remove" value = "0">
+					</fieldset>
+					<!--In:<input type ="radio" name = "inorout" id = "in" value = "In" onclick = "clearComment()">
+					<br>
+					Out:<input type ="radio" name = "inorout" id = "out" value = "Out">
+					<br>-->
+					<!--Comment:<input type="text" name = "comment" id = "status" maxlength = "31">-->
+					
+					<!--<button onclick="buildTable()">TableBuild</button>-->
+					
+					<!--<button onclick="addTableRow();">Add</button>-->
+					<button type = "Submit" onclick="editRow();">Update</button>
+					<button type = "Submit" value = "Submit" onclick = "addTableRow()" >Add</button>
+					<button type = "Submit" value = "Submit" onclick = "removeRow()" >Remove</button>
+					
+					<!--<button type = "Submit" value = "Submit">Update</button>-->
+					
+				</div>
+			</form>
+			<div>
+				<button onclick = "refreshInstant();">Refresh Page</button>
+				<!--<button onclick="removeRow();">Remove</button>-->
+			</div>
+		</div>
+		<script>
+			function refreshInstant(){
+				location.reload();
+			
+			}
+			
+			<!-- rIndex is set to 1 instead of 0 so that the heading cannot be removed -->
+			var table = document.getElementById("table"),
+				rIndex = 0;
+			//window.setTimeout(buildTable(),1000);
+			<!-- clears the comment text box when out is changed to in -->
+			function refreshPage(){
+				
+				setTimeout(function(){
+					console.log("refresheddddddddddddddddddd");
+					location.reload();
+
+				}, 5000); 
+			
+			}
+			function clearComment(){
+				document.getElementById("status").value = "";
+			}
+			
+			<!-- function that allows new name to be added to teh table -->
+			function addTableRow(){
+				//localStorage.clear();
+				if(document.getElementById("idx").value == ""){
+					document.getElementById("idx").value = document.getElementById("table").rows.length;
+				}
+				
+				if(!isEmpty()){
+					newRow = table.insertRow(-1),
+					cell1 = newRow.insertCell(0),
+					cell2 = newRow.insertCell(1),
+					cell3 = newRow.insertCell(2),
+					name = document.getElementById("name").value,
+					status = document.getElementById("status").value;
+						
+					if(document.getElementById("in").checked){
+						cell2.style.color = "#32DD32";
+						cell2.innerHTML = document.getElementById("in").value;
+						
+					}
+					else if(document.getElementById("out").checked){
+						cell2.style.color = "#FF0000";
+						cell2.innerHTML = document.getElementById("out").value;	
+					}
+					
+					/*for (var key in localStorage){
+						if(key == name){
+							name = name + " (Please Differentiate this name)";
+						}
+					}*/
+					cell1.innerHTML = name;
+					cell3.innerHTML = status;
+					
+					let current = {
+						"inorout":cell2.innerHTML,
+						"comment":document.getElementById("status").value
+					
+					}
+					//localStorage.setItem(name,JSON.stringify(current));
+					
+					selectedRow();
+					/*document.getElementById("name").value = "";
+					document.getElementById("in").checked = false;
+					document.getElementById("out").checked = false;
+					document.getElementById("status").value = "";*/
+				}
+				refreshPage();
+			}
+			// Don't need this function anymore because table is now being built off of the Google Sheets Table
+			/*function buildTable(){
+				
+				for (var i = 0; i < localStorage.length; i =i + 1){
+					//console.log(localStorage.getItem(localStorage.key(i)))
+					let currentObj = JSON.parse(localStorage.getItem(localStorage.key(i)));
+					newRow = table.insertRow(-1),
+					cell1 = newRow.insertCell(0),
+					cell2 = newRow.insertCell(1),
+					cell3 = newRow.insertCell(2),
+					name = localStorage.key(i),
+					io = currentObj.inorout
+					status = currentObj.comment;
+					if(io == "In"){
+						cell2.style.color = "#32DD32";
+					}
+					if(io == "Out"){
+						cell2.style.color = "#FF0000";
+					}
+					cell1.innerHTML = name;
+					cell2.innerHTML = io;
+					cell3.innerHTML = status;
+				}
+				selectedRow();
+				hmm I am kind of confused. I need help. I am also not motivated as much anymore. I don't know what to do. I mean I can't figure out how to do the next part in my project. Maybe I should ask for help? However, I don't think anyone in my team knows how to do this. I am very confused. I will just keep typing on this line so that I can use up some time. It can be an Easter Egg that I can look back on to see when I was frustrated. When I look back with an accomplished/finished app, I will be even happier because I would know that I have moved on from a frustrating part while designing this app. :D
+			}*/
+			
+			<!-- places the slected row's information into the text boxes at the bottom of the screen -->
+			function selectedRow(){
+				
+				//localStorage.clear();
+				for(var i = 1; i < table.rows.length; i++){
+					
+					table.rows[i].onclick = function(){
+						rIndex = this.rowIndex;
+						
+						document.getElementById("idx").value = rIndex;
+						if(document.getElementById("idx").value == ""){
+							document.getElementById("idx").value = document.getElementById("table").rows.length;
+						}
+						console.log(document.getElementById("idx").value);
+						
+						
+						document.getElementById("name").value = this.cells[0].innerHTML;
+						if(this.cells[1].innerHTML === "In"){
+							document.getElementById("in").checked = true;
+							document.getElementById("out").checked = false;
+						}
+						else if(this.cells[1].innerHTML === "Out"){
+							document.getElementById("out").checked = true;	
+							document.getElementById("in").checked = false;
+						}
+						document.getElementById("status").value = this.cells[2].innerHTML;
+						
+					
+					
+					}
+				
+				}
+			
+			}
+			
+			<!-- saves the new information from the textbox into the table -->
+			function editRow(){
+			
+				var name = document.getElementById("name").value,
+					status = document.getElementById("status").value;
+				
+				
+					if(!isEmpty()){
+						if(rIndex != 0){
+						
+							//localStorage.removeItem(table.rows[rIndex].cells[0].innerHTML);
+							table.rows[rIndex].cells[0].innerHTML = name;
+							if(document.getElementById("in").checked){
+								table.rows[rIndex].cells[1].style.color = "#32DD32";
+								table.rows[rIndex].cells[1].innerHTML = document.getElementById("in").value;
+							}
+							else if(document.getElementById("out").checked){
+								table.rows[rIndex].cells[1].style.color = "#FF0000";
+								table.rows[rIndex].cells[1].innerHTML = document.getElementById("out").value;	
+							}
+							
+							table.rows[rIndex].cells[2].innerHTML = status;
+							
+							
+							let current = {
+								"inorout":table.rows[rIndex].cells[1].innerHTML,
+								"comment":status
+						
+							}
+							//localStorage.setItem(name,JSON.stringify(current));
+						
+						}
+					}
+				
+				
+				
+				
+				/*document.getElementById("name").value = "";
+				document.getElementById("in").checked = false;
+				document.getElementById("out").checked = false;
+				document.getElementById("status").value = "";*/
+				refreshPage();
+			
+			}
+			
+			<!-- deletes the row from the table while also clearing the textboxes at the bottom of the page -->
+			function removeRow(){
+				document.getElementById("remove").value = "1";
+				document.getElementById("idx").value = rIndex; 
+				if( rIndex !== 0 ){
+					//if(document.getElementById("name").value !== ""){
+						//localStorage.removeItem(document.getElementById("name").value)
+						
+						//document.getElementById("idx").value = "1";
+						
+						table.deleteRow(rIndex);
+						/*document.getElementById("name").value = "";
+						document.getElementById("in").checked = false;
+						document.getElementById("out").checked = false;
+						document.getElementById("status").value = "";*/
+						
+						//rIndex = 0;
+					
+					//}
+				}
+				refreshPage();
+			}
+			
+			<!-- checks if the textbox is empty -->
+			function isEmpty(){
+			
+				var	name = document.getElementById("name").value,
+					status = document.getElementById("status").value;
+				
+				if(name === ""){
+				
+					return true;
+				
+				}
+				if( document.getElementById("in").checked === false && document.getElementById("out").checked === false){
+					return true;	
+				}
+				
+				return false;
+			
+			}
+			window.onload = selectedRow();
+		
+		</script>
+		
+		
+		
+		<!--<a href="#pageTwo" class="ui-btn">Page Two</a> -->
+	</div><!-- /content -->
+
+	
+	
+	<div data-role="footer" data-position="fixed">
+		<h4></h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+<script type='text/javascript'>    
+  var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1TwAc5Hf92nKPbpWHlxRLAcfL8TtxjAUNV3XqC78ISAQ/edit?usp=sharing';
+
+  function init() {
+    Tabletop.init( { key: publicSpreadsheetUrl,
+                     callback: showInfo,
+                     simpleSheet: true } )
+  }
+
+  function showInfo(data, tabletop) {
+    //alert('Successfully processed!')
+	console.log(data);
+    console.log(data);
+	for (var i = 0; i < data.length; i =i + 1){
+		//console.log(localStorage.getItem(localStorage.key(i)))
+		let currentObj = data[i];
+		console.log(currentObj);
+		newRow = table.insertRow(-1),
+		cell1 = newRow.insertCell(0),
+		cell2 = newRow.insertCell(1),
+		cell3 = newRow.insertCell(2),
+		name = currentObj.Name,
+		io = currentObj.InOut,
+		status = currentObj.Comment;
+		console.log(name);
+		if(io == "In"){
+			cell2.style.color = "#32DD32";
+		}
+		if(io == "Out"){
+			cell2.style.color = "#FF0000";
+		}
+		cell1.innerHTML = name;
+		cell2.innerHTML = io;
+		cell3.innerHTML = status;
+	}
+	selectedRow();
+  }
+
+  window.addEventListener('DOMContentLoaded', init)
+</script>
+<script data-cfasync="false" type="text/javascript" src="js/form-submission-handler.js"></script>
+</body>
+
+
+</html>
